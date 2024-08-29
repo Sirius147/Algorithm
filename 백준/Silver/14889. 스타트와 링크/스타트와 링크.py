@@ -2,33 +2,43 @@ import sys
 input = sys.stdin.readline
 vals = []
 
-N = int(input())
-for _ in range(N):
-    vals.append(list(map(int,input().split())))
+def solve(lEngth:int):
 
-states = [False for _ in range(N)]
-scores = set()
+    states = [False for _ in range(lEngth)]
+    whole = set(i for i in range(1,lEngth+1))
+    teamS = set(); scores = set()
+    
+    def judge(team):
+        extras = whole - teamS
+        score = 0; scoreEx = 0
+        for i in team:
+            for j in team:
+                if i == j: continue
+                score += vals[i-1][j-1]
+        for i in extras:
+            for j in extras:
+                if i == j: continue
+                scoreEx += vals[i-1][j-1]
+        return abs(score - scoreEx)
 
-def backtracking(idx:int, num:int):
-    if num == N//2:
-        scoreEx = 0; score = 0
-        for i in range(N):
-            for j in range(N):
-                if states[i] and states[j]:
-                    score += vals[i][j]
-                elif not states[i] and not states[j]:
-                    scoreEx += vals[i][j]
-        scores.add(abs(score - scoreEx))
-        return
+    def backtracking(idx:int, num:int):
+        if num == lEngth//2:
+            scores.add(judge(teamS))
+            return
         
-    for i in range(idx, N):
-        if states[i] == False:
-            states[i] = True
-            backtracking(i+1, num+1)
-            states[i] = False
-            
+        for i in range(idx,lEngth):
+            if states[i] == False:
+                teamS.add(i+1)
+                states[i] = True
+                backtracking(i+1,num+1)
+                teamS.remove(i+1)
+                states[i] = False
+    
+    backtracking(0,0)
+    print(min(scores))
 
-
-backtracking(0,0)
-print(min(scores))
-
+if __name__ == "__main__":
+    lEngth = int(input())
+    for _ in range(lEngth):
+        vals.append(list(map(int,input().split())))
+    solve(lEngth)    
