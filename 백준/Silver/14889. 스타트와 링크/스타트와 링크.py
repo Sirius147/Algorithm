@@ -5,11 +5,11 @@ vals = []
 def solve(lEngth:int):
 
     states = [False for _ in range(lEngth)]
-    whole = set(i for i in range(1,lEngth+1))
-    teamS = set(); scores = set()
-    
+    whole = [i for i in range(1,lEngth+1)]
+    teamS = []; scores = []
+
     def judge(team):
-        extras = whole - teamS
+        extras = [i for i in whole if i not in team]
         score = 0; scoreEx = 0
         for i in team:
             for j in team:
@@ -23,15 +23,15 @@ def solve(lEngth:int):
 
     def backtracking(idx:int, num:int):
         if num == lEngth//2:
-            scores.add(judge(teamS))
+            scores.append(judge(teamS))
             return
         
-        for i in range(idx,lEngth):
+        for i in range(idx, lEngth):
             if states[i] == False:
-                teamS.add(i+1)
+                teamS.append(i+1)
                 states[i] = True
-                backtracking(i+1,num+1)
-                teamS.remove(i+1)
+                backtracking(i+1, num+1)
+                teamS.pop()
                 states[i] = False
     
     backtracking(0,0)
