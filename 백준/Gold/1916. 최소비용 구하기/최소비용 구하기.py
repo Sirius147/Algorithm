@@ -1,33 +1,36 @@
-import heapq 
 import sys
+import heapq
+from math import inf
 input = sys.stdin.readline
 
-N = int(input())
-M = int(input())
-graph = [[] for _ in range(N+1)]
-for _ in range(M):
-    a, b, c = map(int, input().split())
-    graph[a].append((b, c))
-start, end = map(int, input().split())
+def solve():
 
-def dijkstra(graph, start):
-    distances = [int(1e9)] * (N+1)
+    nn = int(input())
+    en = int(input())
+    distances = [inf] * (nn + 1)
+    graph = [[] for i in range(nn+1)]
+
+    for _ in range(en):
+        s,e,c = map(int, input().split())
+        graph[s].append((e,c))
+    
+    start, target = map(int, input().split())
     distances[start] = 0
-    queue = []
-    heapq.heappush(queue, [distances[start], start]) 
+    q = []
+    heapq.heappush(q,[distances[start], start])
 
-    while queue:
-        dist, node = heapq.heappop(queue) 
+    while q:
+        currDist, currPoint = heapq.heappop(q)
+        if currDist > distances[currPoint]: continue    # 이미 다른 엣지 등으로 갱신 되어 있는 노드 탐색 정보
 
-        if distances[node] < dist:
-            continue
+        for e,c in graph[currPoint]:
 
-        for next_node, next_dist in graph[node]:
-            distance = dist + next_dist 
-            if distance < distances[next_node]: 
-                distances[next_node] = distance
-                heapq.heappush(queue, [distance, next_node])  
-    return distances
+            if currDist + c < distances[e]:
+                distances[e] = currDist + c
+                heapq.heappush(q,[currDist + c, e])
+    
+    print(distances[target])
 
-dist_start = dijkstra(graph, start)
-print(dist_start[end])
+if __name__ == "__main__":
+    solve()
+
