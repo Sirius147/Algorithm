@@ -9,8 +9,6 @@ def solution(relation):
     colIdxs = {i for i in range(cols)}
     
     for i in range(1,cols + 1):
-        if len(colIdxs) < i:
-            break
 
         for cs in combinations(colIdxs, i):
             
