@@ -1,19 +1,24 @@
 def solution(begin, end):
     answer = []
     
-    for i in range(begin, end + 1):
-        min_num = 1
-        max_num = 1
-        for j in range(2, int(i ** 0.5) + 1):
+    
+    for i in range(begin,end+1):
+        j = 2
+        minimum = 1
+        check = False
+        while j <= int(i**(1/2)):
             if i % j == 0:
-                if i // j <= 10000000:
-                    min_num = j
-                    answer.append(i // j)
+                if i // j <= 10**7:
+                    answer.append(i//j)
+                    check = True
                     break
                 else:
-                    max_num = j
-        if i == 1:
-            answer.append(0)
-        elif min_num == 1:
-            answer.append(max_num)
+                    minimum = j
+            j+=1
+        
+        if not check:
+            answer.append(minimum)
+            
+    if begin == 1: answer[0] = 0
+    
     return answer
