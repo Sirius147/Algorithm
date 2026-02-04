@@ -1,0 +1,9 @@
+-- 코드를 입력하세요
+SELECT PT_NAME, PT_NO, GEND_CD, AGE, IFNULL(TLNO, 'NONE') AS TLNO
+FROM PATIENT
+WHERE AGE <= 12 AND GEND_CD = 'W'
+ORDER BY AGE DESC, PT_NAME ASC;
+
+
+# 내림차순은 DESC/ 문자열은 ''를 반드시 사용할 것
+# NULLIF(COL, '대체값')을 SELECT 문에 사용할 수 있다.
