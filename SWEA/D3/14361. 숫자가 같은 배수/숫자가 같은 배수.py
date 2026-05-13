@@ -1,33 +1,26 @@
 def function():
     # T 입력 받고 루프생성, tc로 출력 번호 관리
-    # 자연수 N 입력 받고 리스트로 변환하며, 각 숫자를 노드로하는 상태리스트, 노드 갯수 카운트 변수 생성
-    # 첫 자리는 0이 안되게 노드 상태 조정, 노드 개수가 자릿수가 되면 해당 탐색 검증 int 연산으로 2배수 이상임을 검증
-    # 검증 된 자릿수가 있다면 결과 리스트에 True 저장
-
+    # 루프마다 자연수 N (1 ~ 10 ** 6) 문자열로 입력받기
+    # 해당 숫자 문자열의 자릿수 기준 자릿수가 하나 더 늘어나기 전까지 정수화해서 곱하고 다시 문자열로 만들어 활용하기
+    # 곱하여 나온 수 요소하나씩 원래 문자열에 있는 지 확인하기 모두 있으면 possible 출력 하나라도 없으면 impossible 출력
     T = int(input())
     for tc in range(1, T + 1):
-        N = list(input().rstrip())
-        visited = [False for _ in range(len(N))]
-        ans = [False]
+        N = input().rstrip()
+        n = sorted(N)
+        digit = len(N)
+        i = 2
+        tmp = int(N) * i
+        flag = False
 
-        def dfs(tmp):
-            if len(tmp) == len(N):
-                itmp, iN = int(''.join(tmp)), int(''.join(N))
-                if itmp % iN == 0 and itmp // iN > 1:
-                    ans[0] = True
-
-            for i in range(len(N)):
-                if not visited[i]:
-                    visited[i] = True
-                    tmp.append(N[i])
-                    dfs(tmp)
-                    visited[i] = False
-                    tmp.pop()
-
-        dfs([])
-        if ans[0]:
-            print(f"#{tc} possible")
-        else:
+        while len(str(tmp)) == digit:
+            if sorted(str(tmp)) == n:
+                flag = True
+                print(f"#{tc} possible")
+                break
+            else:
+                i += 1
+                tmp = int(N) * i
+        if not flag:
             print(f"#{tc} impossible")
 
 
