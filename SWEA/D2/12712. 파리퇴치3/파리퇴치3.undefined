@@ -1,0 +1,57 @@
+import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        int t = scanner.nextInt();
+        for (int tc = 1; tc <= t; tc++) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+
+            int[][] board = new int[n][n];
+            int[][] values = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    board[i][j] = scanner.nextInt();
+                }
+            }
+
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    int num = 1;
+                    int way1 = board[i][j], way2 = board[i][j];
+                    while (num < m) {
+                        int[][] dir1 = {{-1 * num, 0},{num,0}, {0 , -1 * num}, {0, num}};
+                        int[][] dir2 = {{-1 * num, -1 * num}, {num, -1 * num}, {num, num}, {-1 * num, num}};
+                        // way1 +
+                        for (int[] dir : dir1) {
+                            if (0 <= (i + dir[0])  &&  (i + dir[0]) < n && 0 <= (j + dir[1]) && (j + dir[1]) < n) {
+                                way1 += board[i + dir[0]][j + dir[1]];
+                            }
+                        }
+                        // way2 *
+                        for (int[] dir : dir2) {
+                            if (0 <= (i + dir[0])  &&  (i + dir[0]) < n && 0 <= (j + dir[1]) && (j + dir[1]) < n) {
+                                way2 += board[i + dir[0]][j + dir[1]];
+                            }
+                        }
+                        num++;
+                    }
+                    values[i][j] = Math.max(way1, way2);
+                }
+            }
+
+            int v = -1;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (values[i][j] > v) {
+                        v = values[i][j];
+                    }
+                }
+            }
+            System.out.println("#" + tc + " " + v);
+
+        }
+    }
+}
